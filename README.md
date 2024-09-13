@@ -1,5 +1,5 @@
 # Readme
-This repository includes our data, model code, and parser code.
+This repository includes our data, model code, parser code, etc.
 
 ## Environment Preparation
 
