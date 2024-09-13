@@ -23,7 +23,7 @@ Packages:
 `psycopg2 2.9.9`
 
 ## Code Files
-### Model files
+### Model code
 `model_code/model.py`: code for model training. We implement our model with the popular deep learning development framework PyTorch and the python package transformers developed by HuggingFace. 
 
 `model_code/hard_sharing.py`: hard parameter sharing class for model MTL pre-training.
@@ -40,13 +40,13 @@ and alleviate the OOV problem.
 
 `model_code/modeling_codesage.py`: code for use codesage model.
 
-### Parser files
+### Parser code
 `parser_code/grammar_list.txt`: A formal grammar for Dockerfiles using the Backus-Naur Form (BNF).
 
 `parser_code/Dockerfile_syntax_parser.py`: A parser tool (i.e., Dockerfile-syntax-parser) that can parse the Dockerfile textual content into the corresponding syntax type sequence.
 
 
-### Statistical test
+### Statistical test code
 `stats.R`: code for the Wilcoxon signed-rank tests and plots.
 
 
