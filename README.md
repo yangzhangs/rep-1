@@ -58,3 +58,5 @@ The dataset contains 167,010 instances for pre-training,  89,072 for fine-tuning
 `data/LC`: Training, validation, and testing data for the LC task.
 
 `data/tokenizer.json`: our tokenizer file.
+
+`data/manual_evaluation_scores.csv`: The manual evaluation scores in terms of similarity and naturalness.
