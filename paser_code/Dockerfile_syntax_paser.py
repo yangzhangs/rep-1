@@ -1,6 +1,4 @@
 import re
-
-# 定义 Dockerfile 指令
 import pymysql
 from transformers import PreTrainedTokenizerFast
 
@@ -12,7 +10,6 @@ INSTRUCTIONS = [
     "STOPSIGNAL", "HEALTHCHECK", "SHELL", "MAINTAINER"
 ]
 
-# 构建指令正则表达式模式
 INSTRUCTION_PATTERN = re.compile(r"^\s*(?P<instruction>" + "|".join(INSTRUCTIONS) + r")\s*(?P<arguments>.*)", re.IGNORECASE)
 
 tokenizer = PreTrainedTokenizerFast.from_pretrained("D:/research-related/niuniu work/dockerfill/tokenizer/dcc-tokenizer.json")
@@ -37,7 +34,6 @@ user = r"("+str+r"\S+)"
 group = r"("+str+r"\S+)"
 rules = {"value": r"?P<value>"+value}
 
-# FROM 指令的正则表达式模式
 FROM_PATTERN = re.compile(
     r"^(?:(?P<from_option>--platform)=("+rules['value']+r")\s+)?"
     r"(?P<image>[^\s:@]+)"
@@ -47,51 +43,44 @@ FROM_PATTERN = re.compile(
     re.IGNORECASE
 )
 
-# RUN 指令的正则表达式模式
 RUN_PATTERN = re.compile(
     r"^((?P<run_option>--mount|--network|--security)=("+rules['value']+r")\s+)?(?P<command>(.)+)",
     re.IGNORECASE
 )
 
-# LABEL/ENV 指令的正则表达式模式
 LABEL_ENV_PATTERN = re.compile(
     r"^((?P<key>"+key+r")=(\S+))",
     re.IGNORECASE
 )
 
-# EXPOSE 指令的正则表达式模式
 EXPOSE_PATTERN = re.compile(
     r"^(?P<port>"+port+r")",
     re.IGNORECASE
 )
 
-# COPY 指令的正则表达式模式
 COPY_PATTERN = re.compile(
     r"^((?P<copy_flag>--from|--chown|--chmod|--link|--parents|--exclude)=("+rules['value']+r")\s+)?"
     r"(?P<src>"+src+r"\s+)+(?P<dest>"+dest+r")",
     re.IGNORECASE
 )
 
-# ADD 指令的正则表达式模式
 ADD_PATTERN = re.compile(
     r"^((?P<add_flag>--checksum|--chown|--chmod|--keep-git-dir|--link=|--exclude)=("+rules['value']+r")\s+)?"
     r"(?P<src>"+src+r"\s+)+(?P<dest>"+dest+r")",
     re.IGNORECASE
 )
 
-# VOLUME 指令的正则表达式模式
+
 VOLUME_PATTERN = re.compile(
     r"^((?P<json_path>\[.*?\])|(?P<path>\S+))",
     re.IGNORECASE
 )
 
-# USER 指令的正则表达式模式
 USER_PATTERN = re.compile(
     r"^(?P<user>\S+)(:(?P<group>\S+))?",
     re.IGNORECASE
 )
 
-# HEALTHCHECK 指令的正则表达式模式
 HEALTHCHECK_PATTERN = re.compile(
     r"^((?P<healthcheck_option>--interval|--timeout|--start-period|--start-interval|--retries)=("+rules['value']+r")(\s+)?)*"
     r"(CMD\s+(?P<command>[^\n]+))?",
@@ -101,20 +90,17 @@ HEALTHCHECK_PATTERN = re.compile(
 
 #parsed_tokens = []
 
-# 函数：解析 Dockerfile 内容
 def parse_dockerfile(dockerfile_content,parsed_tokens):
     lines = dockerfile_content.strip().splitlines()
     #print(lines)
 
     for line in lines:
-        # 匹配指令和参数
         match = INSTRUCTION_PATTERN.match(line)
         #print(match)
         if match:
             instruction = match.group("instruction").upper()
             arguments = match.group("arguments").strip()
 
-            # 根据指令进一步解析参数
             if instruction == "FROM":
                 parsed_tokens.append((instruction, "FROM"))
                 from_match = FROM_PATTERN.match(arguments)
@@ -348,7 +334,6 @@ def parse_dockerfile(dockerfile_content,parsed_tokens):
         elif line.startswith("#"):
             continue
         else:
-            # 非指令行
             parsed_tokens.append((line.strip(), "UNKNOWN"))
 
     return parsed_tokens
@@ -365,16 +350,13 @@ if __name__ == '__main__':
     cur_u = conn_u.cursor()
     mis_count = 0
     try:
-        query = "select no,content_valid,token_ids from dockerfile_rmdup_3m where length(token_ids)<>length(token_ids_type)"
-        #query = "select no,content_valid,token_ids from dockerfile_rmdup_3m where no=10083"
+        query = "select no,content_valid,token_ids from dockerfiles"
         cur.execute(query)
         data = cur.fetchall()
         for row in data:
             print(row[0])
-            # getGHAWorkflows(fullname)
             #print("Dockerfile:")
             #print(row[1])
-            # 解析 Dockerfile 内容
             try:
                 parsed_tokens = parse_dockerfile(row[1],[])
                 tag = 1
@@ -386,7 +368,6 @@ if __name__ == '__main__':
             #print(len([e for e in row[2][1:-1].split(',')]))
             #print(len(row[2]))
 
-            # 打印解析结果
             #print("\nABSTRACTED:")
             if tag==1:
                 types = []
