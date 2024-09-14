@@ -42,6 +42,52 @@ and alleviate the OOV problem.
 
 ### Parser code
 `parser_code/grammar_list.txt`: A formal grammar for Dockerfiles using the Backus-Naur Form (BNF).
+```
+<Dockerfile> ::= <Instruction>*
+<Instruction> ::= <FROM> | <RUN> | <CMD> | <LABEL> | <EXPOSE> | <ENV> | <ADD> | <COPY> | <ENTRYPOINT> | <VOLUME> | <USER> | <WORKDIR> | <ARG> | <STOPSIGNAL> | <HEALTHCHECK> | <SHELL> | <MAINTAINER> | <ONBUILD>
+<FROM> ::= "FROM" [ <option> <value> ] <image> [ ":" <tag> | "@" <digest> ] [ "AS" <alias> | "as" <alias>]
+<RUN> ::= "RUN" [ <run_option> <value> ] <command> ( <command_separator> <command> )* | "RUN" <json_commands>
+<command_separator> ::= "&&" | "||" | ";"
+<CMD> ::= "CMD" <json_commands> | "CMD" <command>
+<LABEL> ::= "LABEL" <key_values>
+<EXPOSE> := “EXPOSE” <port>+
+<ENV> ::= "ENV" <key_values>
+<COPY> ::= "COPY"  [ <copy_flags> <value> ] <src>+ <dest>
+<ADD> ::= "ADD" [ <add_flags> <value> ]  <src>+ <dest>
+<ENTRYPOINT> ::= "ENTRYPOINT" <json_paths> | "ENTRYPOINT" <command>
+<VOLUME> ::= "VOLUME" <JSON-paths> | <path>
+<USER> ::= "USER" <user> [ ":" <group> ]
+<WORKDIR> ::= "WORKDIR" <path>
+<ARG> ::= "ARG" <key> [ "=" <value> ]
+<STOPSIGNAL> := "STOPSIGNAL" <value>
+<HEALTHCHECK> :=  "HEALTHCHECK" [ <healthcheck_options> <value> ] "CMD" <command>
+<SHELL> ::= "SHELL" <json_commands>
+<MAINTAINER> ::= "MAINTAINER" <value>
+<ONBUILD> ::= "ONBUILD" <Instruction>
+<from_option> ::= "--platform=" 
+<run_option> ::= ( "--mount=" | "--network=" | "--security=" )
+<copy_flags> ::= ( "--from=" | "--chown=" | "--chmod=" | "--link=" | "--parents" | "--exclude" )+
+<add_flags> ::= ( "--checksum=" | "--chown=" | "--chmod=" | "--keep-git-dir=" | "--link=" | "--exclude=" )+
+<healthcheck_options> ::= ( "--interval=" | "--timeout=" | "--start-period=" | "--start-interval=" | "--retries=" )
+<image> := <str>
+<tag>:= <str>
+<digest>:= <str>
+<alias> := <str>
+<command>:= <str>
+<json_commands> :=  "[" <command> ( "," <command> )* "]"
+<key_values> := <key>  <value> |  (<key> "=" <value>)+
+<key>:= <str>
+<value> := <str>
+<str> ::= /([^$\n\s]|(\$<var>|\${<var>}))*/
+<var> ::= /[a-zA-Z_][a-zA-Z0-9_]*/
+<port>:= ((\d+)(\/([a-zA-Z]))?)+
+<src>:=<str>
+<dest>:=<str>
+<path>:=<str>
+<json_paths> :=  "[" <path> ( "," <path> )* "]"
+<user>:=<str>
+<group>:=<str>
+```
 
 `parser_code/Dockerfile_syntax_parser.py`: A parser tool (i.e., Dockerfile-syntax-parser) that can parse the Dockerfile textual content into the corresponding syntax type sequence.
 
