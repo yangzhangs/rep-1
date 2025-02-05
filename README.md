@@ -106,3 +106,5 @@ The dataset contains 167,010 instances for pre-training,  89,072 for fine-tuning
 `data/tokenizer.json`: our tokenizer file.
 
 `data/manual_evaluation_scores.csv`: The manual evaluation scores in terms of similarity and naturalness (372 samples and 2 evaluators).
+
+`analysis_llms.md`: return results from llms for the two eveluation scenarios.
