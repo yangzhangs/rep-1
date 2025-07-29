@@ -97,7 +97,7 @@ and alleviate the OOV problem.
 
 
 ## Data Files
-The dataset contains 167,010 instances for pre-training,  89,072 for fine-tuning's training, 11,134 for validation, and 11,134 for testing. 
+The dataset contains 3,810 instances for pre-training,  2,032 for fine-tuning's training, 254 for validation, and 254 for testing. 
 
 `data/TC`: Training, validation, and testing data for the TC task.
 
@@ -105,6 +105,6 @@ The dataset contains 167,010 instances for pre-training,  89,072 for fine-tuning
 
 `data/tokenizer.json`: our tokenizer file.
 
-`data/manual_evaluation_scores.csv`: The manual evaluation scores in terms of similarity and naturalness (372 samples and 2 evaluators).
+`data/manual_evaluation_scores.csv`: The manual evaluation scores in terms of similarity and naturalness (254 samples and 2 evaluators).
 
-`data/analysis_llms.md`: return results from llms for the two eveluation scenarios.
+`data/llm_prompt.md`: The prompt templates of llms for the two tasks.
