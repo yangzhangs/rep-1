@@ -109,18 +109,18 @@ def preprocess_logits_for_metrics(logits, labels):
 
 training_args = TrainingArguments(
     output_dir="/model/",
-    evaluation_strategy="no",
-    logging_strategy="steps",
-    save_strategy="steps",
+    eval_strategy="no",
+    logging_strategy="epoch",
+    save_strategy="epoch",
     learning_rate=5e-5,
-    per_device_train_batch_size=8,
+    warmup_ratio=0.1,
+    per_device_train_batch_size=16,
     seed=123,
-    save_steps=10000,
-    logging_steps=1000,
-    max_steps=100000,
+    save_total_limit=2,
+    num_train_epochs=100,
     optim="adamw_torch",
     fp16=True,
-    report_to = 'none'
+    report_to='none'
 )
 
 
