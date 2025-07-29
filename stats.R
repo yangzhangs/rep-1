@@ -132,51 +132,36 @@ group2 <- data.frame(
 
 M<-read.csv('all_results_1.csv',header=TRUE,sep=",")
 
-M$type<-factor(M$type,c("Similarity", "Naturalness"))
-M$Model<-factor(M$Model,c("CodeBERT","CodeSage","ContraCode","StarEncoder","UniXcoder","DockerFill"))
+M$model<-factor(M$model,c("CodeBERT","ContraCode","CodeSage","StarEncoder","UniXcoder",
+                          "DeepSeek-Coder","Code-Llama","Qwen-Coder","GPT-3.5-Turbo","GPT-4o","DockerFill"))
 
-my_colors <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00")
+my_colors <- c("#E69F00", "#E69F00", "#E69F00", "#E69F00", "#E69F00", 
+               "#56B4E9", "#56B4E9", "#56B4E9", "#56B4E9", "#56B4E9", 
+               "#D55E56")
 
-ggplot(M, aes(x = type, y = score, fill = Model)) +
+m<-ggplot(M, aes(x = model, y = avg_naturalness, fill = model
+              )) +
   geom_boxplot(width=0.85) +
-  labs(x = "", y = "Averaged score", title = "") +
+  labs(x = "", y = "Averaged naturalness score", title = "") +
   scale_fill_manual(values = my_colors)+
   theme_bw() +
-  theme(legend.position = "top", 
-        legend.direction = "horizontal",
-        legend.box = "horizontal",  
+  theme(legend.position = "none", 
         axis.title.y = element_text(size = 13),
-        legend.text = element_text(size = 12),
-        legend.title = element_blank(),
-        axis.text.x = element_text(size = 14),
-        axis.text.y = element_text(size = 12)) +
-  guides(fill = guide_legend(nrow = 1))
+        axis.text.x = element_text(size = 12,angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 12)) 
 
-
-
-if (!require(ggplot2)) install.packages("ggplot2")
-library(ggplot2)
-
-
-set.seed(123)  
-models <- paste0("Model_", 1:6)
-similarity_scores <- rnorm(6, mean = 50, sd = 10) 
-naturalness_scores <- rnorm(6, mean = 50, sd = 10) 
-
-data <- data.frame(
-  Model = rep(models, each = 2),  
-  Type = rep(c("Similarity", "Naturalness"), each = 12),  
-  Score = c(similarity_scores, naturalness_scores) 
-)
-
-summary(data)
-
-
-ggplot(data, aes(x = Type, y = Score, fill = Model)) +
-  geom_boxplot() +  
-  labs(x = "", y = "Score", fill = "Model") +
-  theme_bw() +  
-  theme(legend.position = "top", 
-        legend.direction = "horizontal",
-        legend.box = "horizontal",  
-        axis.text.x = element_text(hjust = 1))  
+p<-ggplot(M, aes(x = model, y = avg_similarity, fill = model
+)) +
+  geom_boxplot(width=0.85) +
+  labs(x = "", y = "Averaged similarity score", title = "") +
+  scale_fill_manual(values = my_colors)+
+  theme_bw() +
+  theme(legend.position = "none", 
+    #legend.direction = "horizontal",
+    #legend.box = "horizontal", 
+    axis.title.y = element_text(size = 13),
+    #legend.text = element_text(size = 12),
+    #legend.title = element_blank(),
+    axis.text.x = element_text(size = 12,angle = 45, hjust = 1),
+    axis.text.y = element_text(size = 12)) #+
+p
